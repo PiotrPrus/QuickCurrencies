@@ -1,6 +1,8 @@
 package com.piotrprus.quickcurrencies
 
 import android.app.Application
+import com.piotrprus.quickcurrencies.common.di.networkModule
+import com.piotrprus.quickcurrencies.common.di.repositoryModule
 import com.piotrprus.quickcurrencies.common.di.viewModelModule
 import io.reactivex.plugins.RxJavaPlugins
 import org.koin.android.ext.koin.androidContext
@@ -16,7 +18,9 @@ class QuickCurrencies : Application() {
             androidContext(this@QuickCurrencies)
             modules(
                 listOf(
-                    viewModelModule
+                    viewModelModule,
+                    networkModule,
+                    repositoryModule
                 )
             )
         }

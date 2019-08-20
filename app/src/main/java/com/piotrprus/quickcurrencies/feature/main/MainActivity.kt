@@ -7,4 +7,9 @@ import com.piotrprus.quickcurrencies.databinding.ActivityMainBinding
 
 @LayoutResId(R.layout.activity_main)
 class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>(MainViewModel::class) {
+
+    override fun start() {
+        super.start()
+        binding.viewModel = viewModel
+    }
 }
