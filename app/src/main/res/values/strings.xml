@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">QuickCurrencies</string>
+    <string name="eur_full_name">Euro</string>
+    <string name="aud_full_name">Australian Dollar</string>
+    <string name="bgn_full_name">Bulgarian Lev</string>
+    <string name="brl_full_name">Brazilian Real</string>
+    <string name="cad_full_name">Canadian Dollar</string>
+    <string name="chf_full_name">Swiss Franc</string>
+    <string name="cny_full_name">Yuan Renminbi</string>
+    <string name="czk_full_name">Czech Koruna</string>
+    <string name="dkk_full_name">Danish Krone</string>
+    <string name="gbp_full_name">Pound Sterling</string>
+    <string name="hkd_full_name">Hong Kong Dollar</string>
+    <string name="hrk_full_name">Kuna</string>
+    <string name="huf_full_name">Forint</string>
+    <string name="idr_full_name">Rupiah</string>
+    <string name="ils_full_name">New Israeli Sheqel</string>
+    <string name="inr_full_name">Indian Rupee</string>
+    <string name="isk_full_name">Iceland Krona</string>
+    <string name="jpy_full_name">Yen</string>
+    <string name="krw_full_name">Won</string>
+    <string name="mxn_full_name">Mexican Peso</string>
+    <string name="myr_full_name">Malaysian Ringgit</string>
+    <string name="nok_full_name">Norwegian Krone</string>
+    <string name="nzd_full_name">New Zealand Dollar</string>
+    <string name="php_full_name">Philippine Peso</string>
+    <string name="pln_full_name">Zloty</string>
+    <string name="ron_full_name">Romanian Leu</string>
+    <string name="rub_full_name">Russian Ruble</string>
+    <string name="sek_full_name">Swedish Krona</string>
+    <string name="sgd_full_name">Singapore Dollar</string>
+    <string name="thb_full_name">Baht</string>
+    <string name="try_full_name">Turkish Lira</string>
+    <string name="usd_full_name">US Dollar</string>
+    <string name="zar_full_name">Rand</string>
 </resources>
