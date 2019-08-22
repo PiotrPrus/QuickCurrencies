@@ -36,7 +36,7 @@ object Const {
         "sek" to (R.string.sek_full_name to R.drawable.sek_flag),
         "sgd" to (R.string.sgd_full_name to R.drawable.sgd_flag),
         "thb" to (R.string.thb_full_name to R.drawable.thb_flag),
-        "try" to (R.string.try_full_name to R.drawable.try_flag),
+        "tRY" to (R.string.try_full_name to R.drawable.try_flag),
         "usd" to (R.string.usd_full_name to R.drawable.usd_flag),
         "zar" to (R.string.zar_full_name to R.drawable.zar_flag)
     )
