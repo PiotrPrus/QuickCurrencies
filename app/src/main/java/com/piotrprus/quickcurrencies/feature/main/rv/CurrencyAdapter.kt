@@ -32,7 +32,7 @@ private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Currency>() {
     }
 }
 
-class CurrencyAdapter : ListAdapter<Currency, CurrencyViewHolder>(DIFF_CALLBACK) {
+class CurrencyAdapter(private val onClickFunction: (String) -> Unit) : ListAdapter<Currency, CurrencyViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
         val binding: ItemCurrencyBinding = DataBindingUtil
             .inflate(LayoutInflater.from(parent.context), R.layout.item_currency, parent, false)
@@ -41,6 +41,6 @@ class CurrencyAdapter : ListAdapter<Currency, CurrencyViewHolder>(DIFF_CALLBACK)
 
     override fun onBindViewHolder(holder: CurrencyViewHolder, position: Int) {
         val currency: Currency = getItem(position)
-        holder.bind(currency)
+        holder.bind(currency, onClickFunction)
     }
 }

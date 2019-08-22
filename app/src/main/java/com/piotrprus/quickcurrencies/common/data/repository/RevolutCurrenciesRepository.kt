@@ -6,5 +6,8 @@ import com.piotrprus.quickcurrencies.utils.constants.Const
 import io.reactivex.Single
 
 class RevolutCurrenciesRepository(private val currenciesApi: RevolutCurrenciesApi) {
-    fun fetchRates(code: String = Const.EUR_CODE): Single<CurrencyBase> = currenciesApi.getRates(code)
+    fun fetchRates(code: String?): Single<CurrencyBase> {
+        val currencyCode = code ?: Const.EUR_CODE
+        return currenciesApi.getRates(currencyCode)
+    }
 }

@@ -6,10 +6,11 @@ import com.piotrprus.quickcurrencies.common.data.models.CurrencyBase
 import com.piotrprus.quickcurrencies.common.data.repository.RevolutCurrenciesRepository
 import com.piotrprus.quickcurrencies.common.extensions.addToComposite
 import com.piotrprus.quickcurrencies.utils.event.DataEventEmitter
-import com.piotrprus.quickcurrencies.utils.event.EventEmitter
 import com.piotrprus.quickcurrencies.utils.event.emit
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -18,20 +19,21 @@ import kotlin.reflect.full.memberProperties
 class MainViewModel(private val repository: RevolutCurrenciesRepository) : BaseViewModel() {
 
     val submitListEvent = DataEventEmitter<List<Currency>>()
+    private var apiDisposable: Disposable? = null
 
     init {
-        startObservingRates()
+        startObservingRates(null)
     }
 
-    private fun startObservingRates() {
-        Flowable
+    fun startObservingRates(currencyCode: String?) {
+        apiDisposable?.dispose()
+        apiDisposable = Flowable
             .interval(1, TimeUnit.SECONDS)
             .onBackpressureLatest()
-            .concatMapSingle { repository.fetchRates() }
+            .concatMapSingle { repository.fetchRates(currencyCode) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeOn(Schedulers.io())
             .subscribe({ handleResults(it) }, {})
-            .addToComposite(disposables)
     }
 
     private fun handleResults(item: CurrencyBase) {
@@ -43,5 +45,10 @@ class MainViewModel(private val repository: RevolutCurrenciesRepository) : BaseV
         }
         Timber.d("Handle results took: ${System.currentTimeMillis().minus(startTime)} and listSize: ${currencyList.size}")
         submitListEvent.emit(currencyList)
+    }
+
+    override fun onCleared() {
+        apiDisposable?.dispose()
+        super.onCleared()
     }
 }

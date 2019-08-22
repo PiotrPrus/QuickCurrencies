@@ -11,7 +11,7 @@ class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>(MainView
 
     override fun start() {
         super.start()
-        val adapter = CurrencyAdapter()
+        val adapter = CurrencyAdapter { viewModel.startObservingRates(it) }
         binding.currencyRV.adapter = adapter
         binding.viewModel = viewModel
         viewModel.submitListEvent.observeEvent { adapter.submitList(it) }
