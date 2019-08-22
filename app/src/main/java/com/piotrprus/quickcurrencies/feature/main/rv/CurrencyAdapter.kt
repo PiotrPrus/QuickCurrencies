@@ -1,5 +1,6 @@
 package com.piotrprus.quickcurrencies.feature.main.rv
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -14,7 +15,21 @@ private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Currency>() {
         oldItem.name == newItem.name
 
     override fun areContentsTheSame(oldItem: Currency, newItem: Currency): Boolean =
-        oldItem.rate == newItem.rate
+        oldItem == newItem
+
+    override fun getChangePayload(oldItem: Currency, newItem: Currency): Bundle? {
+        val bundle = Bundle()
+        if (oldItem.iconDrawableId != newItem.iconDrawableId) {
+            bundle.putInt("imageResId", newItem.iconDrawableId)
+        }
+        if (oldItem.fullNameResId != newItem.fullNameResId) {
+            bundle.putInt("fullNameResId", newItem.fullNameResId)
+        }
+        if (oldItem.name != newItem.name) {
+            bundle.putString("currencyName", newItem.name)
+        }
+        return bundle
+    }
 }
 
 class CurrencyAdapter : ListAdapter<Currency, CurrencyViewHolder>(DIFF_CALLBACK) {
