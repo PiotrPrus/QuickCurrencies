@@ -3,7 +3,6 @@ package com.piotrprus.quickcurrencies.common.data.models
 import com.google.gson.annotations.SerializedName
 
 data class Rates (
-
     @SerializedName("AUD") val aUD : Double,
     @SerializedName("BGN") val bGN : Double,
     @SerializedName("BRL") val bRL : Double,
