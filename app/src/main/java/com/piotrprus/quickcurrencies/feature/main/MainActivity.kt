@@ -9,16 +9,19 @@ import com.piotrprus.quickcurrencies.feature.main.rv.CurrencyAdapter
 
 @LayoutResId(com.piotrprus.quickcurrencies.R.layout.activity_main)
 class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>(MainViewModel::class) {
-
-    override fun start() {
-        super.start()
-        val adapter = CurrencyAdapter { onClickAction(it) }
-        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+    private val adapter = CurrencyAdapter { onClickAction(it) }
+    private val adapterDataObserver: RecyclerView.AdapterDataObserver by lazy {
+        object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
                 super.onItemRangeMoved(fromPosition, toPosition, itemCount)
                 if (toPosition == 0) binding.currencyRV.scrollToPosition(0)
             }
-        })
+        }
+    }
+
+    override fun start() {
+        super.start()
+        adapter.registerAdapterDataObserver(adapterDataObserver)
         binding.currencyRV.adapter = adapter
         binding.viewModel = viewModel
         viewModel.submitListEvent.observeEvent { adapter.submitList(it) }
@@ -28,5 +31,8 @@ class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>(MainView
         viewModel.startObservingRates(currencyCode)
     }
 
-
+    override fun onDestroy() {
+        adapter.unregisterAdapterDataObserver(adapterDataObserver)
+        super.onDestroy()
+    }
 }
