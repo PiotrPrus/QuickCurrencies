@@ -1,22 +1,27 @@
 package com.piotrprus.quickcurrencies.feature.main
 
 import androidx.recyclerview.widget.RecyclerView
+import com.piotrprus.quickcurrencies.R
 import com.piotrprus.quickcurrencies.base.BaseVMActivity
 import com.piotrprus.quickcurrencies.common.annotation.LayoutResId
 import com.piotrprus.quickcurrencies.common.extensions.onTextChanged
+import com.piotrprus.quickcurrencies.common.extensions.showKeyboard
 import com.piotrprus.quickcurrencies.databinding.ActivityMainBinding
 import com.piotrprus.quickcurrencies.feature.main.rv.CurrencyAdapter
 
 
-@LayoutResId(com.piotrprus.quickcurrencies.R.layout.activity_main)
+@LayoutResId(R.layout.activity_main)
 class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>(MainViewModel::class) {
 
-    private val adapter: CurrencyAdapter by lazy { CurrencyAdapter { viewModel.startObservingRates(it) } }
+    private val adapter: CurrencyAdapter by lazy {
+        CurrencyAdapter { viewModel.startObservingRates(it) }
+    }
     private val adapterDataObserver: RecyclerView.AdapterDataObserver by lazy {
         object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
                 super.onItemRangeRemoved(positionStart, itemCount)
                 binding.currencyRV.scrollToPosition(0)
+                binding.baseET.showKeyboard()
             }
         }
     }
