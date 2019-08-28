@@ -3,13 +3,15 @@ package com.piotrprus.quickcurrencies.feature.main
 import androidx.recyclerview.widget.RecyclerView
 import com.piotrprus.quickcurrencies.base.BaseVMActivity
 import com.piotrprus.quickcurrencies.common.annotation.LayoutResId
+import com.piotrprus.quickcurrencies.common.extensions.onTextChanged
 import com.piotrprus.quickcurrencies.databinding.ActivityMainBinding
 import com.piotrprus.quickcurrencies.feature.main.rv.CurrencyAdapter
 
 
 @LayoutResId(com.piotrprus.quickcurrencies.R.layout.activity_main)
 class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>(MainViewModel::class) {
-    private val adapter = CurrencyAdapter { onClickAction(it) }
+
+    private val adapter: CurrencyAdapter by lazy { CurrencyAdapter { viewModel.startObservingRates(it) } }
     private val adapterDataObserver: RecyclerView.AdapterDataObserver by lazy {
         object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
@@ -25,10 +27,7 @@ class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>(MainView
         binding.currencyRV.adapter = adapter
         binding.viewModel = viewModel
         viewModel.submitListEvent.observeEvent { adapter.submitList(it) }
-    }
-
-    private fun onClickAction(currencyCode: String) {
-        viewModel.startObservingRates(currencyCode)
+        binding.baseET.onTextChanged { viewModel.updateBaseRate(it) }
     }
 
     override fun onDestroy() {

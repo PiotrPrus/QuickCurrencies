@@ -1,5 +1,6 @@
 package com.piotrprus.quickcurrencies.feature.main
 
+import androidx.lifecycle.MutableLiveData
 import com.piotrprus.quickcurrencies.base.BaseViewModel
 import com.piotrprus.quickcurrencies.common.data.models.Currency
 import com.piotrprus.quickcurrencies.common.data.models.CurrencyBase
@@ -17,10 +18,11 @@ import kotlin.reflect.full.memberProperties
 class MainViewModel(private val repository: RevolutCurrenciesRepository) : BaseViewModel() {
 
     val submitListEvent = DataEventEmitter<List<Currency>>()
-    var currentBaseCode: String = Const.EUR_CODE
     private var apiDisposable: Disposable? = null
+    val baseItemLiveData = MutableLiveData<Currency>()
 
     init {
+        baseItemLiveData.value = Currency(Const.EUR_CODE, 1.0)
         startObservingRates(null)
     }
 
@@ -39,15 +41,21 @@ class MainViewModel(private val repository: RevolutCurrenciesRepository) : BaseV
         val list = mutableListOf<Currency>()
         for (prop in item.rates::class.memberProperties) {
             val rateValue = prop.getter.call(item.rates) as Double
-            if (prop.name != item.base) list.add(Currency(prop.name, rateValue))
+            val rateValueCalculated = baseItemLiveData.value?.rate?.times(rateValue) ?: rateValue
+            if (prop.name != item.base) list.add(Currency(prop.name, rateValueCalculated))
         }
-        list.add(0, Currency(item.base, 1.0))
+        if (baseItemLiveData.value?.name != item.base) baseItemLiveData.value = Currency(item.base, 1.0)
         submitListEvent.emit(list)
-        currentBaseCode = item.base
     }
 
     override fun onCleared() {
         apiDisposable?.dispose()
         super.onCleared()
+    }
+
+    fun updateBaseRate(changedRate: String) {
+        baseItemLiveData.value = baseItemLiveData.value.let { currency ->
+            currency?.copy(rate = changedRate.toDoubleOrNull() ?: 1.0)
+        }
     }
 }
