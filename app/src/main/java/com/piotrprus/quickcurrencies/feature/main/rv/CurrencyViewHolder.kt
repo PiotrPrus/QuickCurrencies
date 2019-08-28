@@ -14,6 +14,6 @@ class CurrencyViewHolder(private val binding: ItemCurrencyBinding) : RecyclerVie
         binding.currencyNameSecondary.text = binding.root.context.getString(currency.fullNameResId)
         binding.currencySymbolIV.setImageDrawable(binding.root.context.getDrawable(currency.iconDrawableId))
         binding.currencyTv.text = currency.rate.roundToDecimals(4).toString()
-        binding.currencySymbolIV.setOnClickListener { onClickFunction(currency.name) }
+        binding.root.setOnClickListener { onClickFunction(currency.name) }
     }
 }

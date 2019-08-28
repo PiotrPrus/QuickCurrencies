@@ -14,9 +14,9 @@ class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>(MainView
     private val adapter: CurrencyAdapter by lazy { CurrencyAdapter { viewModel.startObservingRates(it) } }
     private val adapterDataObserver: RecyclerView.AdapterDataObserver by lazy {
         object : RecyclerView.AdapterDataObserver() {
-            override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
-                super.onItemRangeMoved(fromPosition, toPosition, itemCount)
-                if (toPosition == 0) binding.currencyRV.scrollToPosition(0)
+            override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+                super.onItemRangeRemoved(positionStart, itemCount)
+                binding.currencyRV.scrollToPosition(0)
             }
         }
     }
