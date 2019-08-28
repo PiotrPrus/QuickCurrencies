@@ -10,6 +10,7 @@ import com.piotrprus.quickcurrencies.common.data.repository.RevolutCurrenciesRep
 import com.piotrprus.quickcurrencies.common.extensions.addToComposite
 import com.piotrprus.quickcurrencies.utils.constants.Const
 import com.piotrprus.quickcurrencies.utils.event.DataEventEmitter
+import com.piotrprus.quickcurrencies.utils.event.EventEmitter
 import com.piotrprus.quickcurrencies.utils.event.emit
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -33,6 +34,7 @@ class MainViewModel(
     val dataVisibility = MutableLiveData<Boolean>()
     val failureViewVisibility = MutableLiveData<Boolean>()
     var currentCurrencyBase: CurrencyBase? = null
+    val showSnackbarEvent = EventEmitter()
 
     init {
         dataStateLiveData.value = DataState.LOADING
@@ -72,7 +74,10 @@ class MainViewModel(
             .subscribeOn(Schedulers.io())
             .andThen(dbRepository.getBaseItem())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ item -> handleResults(item) },
+            .subscribe({ item ->
+                handleResults(item)
+                showSnackbarEvent.emit()
+            },
                 {
                     Timber.d(it, "Fetching data from db failed.")
                     dataStateLiveData.value = DataState.FAILED

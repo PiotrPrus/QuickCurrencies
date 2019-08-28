@@ -33,5 +33,8 @@
     <string name="try_full_name">Turkish Lira</string>
     <string name="usd_full_name">US Dollar</string>
     <string name="zar_full_name">Rand</string>
-    <string name="not_able_to_load">Oops, We are not able to load your data...</string>
+
+    <string name="not_able_to_load">Oops, We are not able to load your data…</string>
+    <string name="snackbar_main_text">You are using calculator in offline mode</string>
+    <string name="snackbar_button_text">GO ONLINE</string>
 </resources>
