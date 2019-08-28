@@ -33,4 +33,5 @@
     <string name="try_full_name">Turkish Lira</string>
     <string name="usd_full_name">US Dollar</string>
     <string name="zar_full_name">Rand</string>
+    <string name="not_able_to_load">Oops, We are not able to load your data...</string>
 </resources>

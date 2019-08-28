@@ -33,6 +33,7 @@ class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>(MainView
         binding.viewModel = viewModel
         viewModel.submitListEvent.observeEvent { adapter.submitList(it) }
         binding.baseET.onTextChanged { viewModel.updateBaseRate(it) }
+        viewModel.dataStateLiveData.observe { viewModel.updateViewsVisibility(it) }
     }
 
     override fun onDestroy() {
