@@ -48,6 +48,12 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_ver"
     //http interceptor
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+    //Room database library
+    def room_version = "2.1.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
 
     implementation 'com.jakewharton.timber:timber:4.7.1'
 

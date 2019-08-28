@@ -34,6 +34,9 @@ class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>(MainView
         viewModel.submitListEvent.observeEvent { adapter.submitList(it) }
         binding.baseET.onTextChanged { viewModel.updateBaseRate(it) }
         viewModel.dataStateLiveData.observe { viewModel.updateViewsVisibility(it) }
+        viewModel.baseItemLiveData.observe {
+            viewModel.currentCurrencyBase?.let { viewModel.handleResults(it) }
+        }
     }
 
     override fun onDestroy() {

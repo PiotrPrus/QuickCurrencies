@@ -1,6 +1,7 @@
 package com.piotrprus.quickcurrencies
 
 import android.app.Application
+import com.piotrprus.quickcurrencies.common.di.databaseModule
 import com.piotrprus.quickcurrencies.common.di.networkModule
 import com.piotrprus.quickcurrencies.common.di.repositoryModule
 import com.piotrprus.quickcurrencies.common.di.viewModelModule
@@ -20,7 +21,8 @@ class QuickCurrencies : Application() {
                 listOf(
                     viewModelModule,
                     networkModule,
-                    repositoryModule
+                    repositoryModule,
+                    databaseModule
                 )
             )
         }
