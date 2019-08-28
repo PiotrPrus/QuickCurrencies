@@ -52,7 +52,7 @@ class MainViewModel(
             .subscribeOn(Schedulers.io())
             .subscribe({ handleResults(it) }, {
                 Timber.d(it, "Fetching currency data failed, trying to load from db")
-                loadDataFromDb()
+                loadDataFromDb(currencyCode)
             })
     }
 
@@ -69,13 +69,15 @@ class MainViewModel(
         dataStateLiveData.value = DataState.LOADED
     }
 
-    private fun loadDataFromDb() {
+    private fun loadDataFromDb(currencyCode: String?) {
+        if (currencyCode != null) return
         dbRepository.addBaseItem(currentCurrencyBase)
             .subscribeOn(Schedulers.io())
             .andThen(dbRepository.getBaseItem())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ item ->
                 handleResults(item)
+                Timber.d("Item from db: ${item.base}")
                 showSnackbarEvent.emit()
             },
                 {
