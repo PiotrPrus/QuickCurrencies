@@ -13,7 +13,6 @@ import com.piotrprus.quickcurrencies.utils.event.DataEventEmitter
 import com.piotrprus.quickcurrencies.utils.event.EventEmitter
 import com.piotrprus.quickcurrencies.utils.event.emit
 import io.reactivex.Flowable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -57,6 +56,7 @@ class MainViewModel(
     }
 
     fun handleResults(item: CurrencyBase) {
+        saveDataToDb(item)
         currentCurrencyBase = item
         val list = mutableListOf<Currency>()
         for (prop in item.rates::class.memberProperties) {
@@ -69,16 +69,22 @@ class MainViewModel(
         dataStateLiveData.value = DataState.LOADED
     }
 
-    private fun loadDataFromDb(currencyCode: String?) {
-        if (currencyCode != null) return
-        dbRepository.addBaseItem(currentCurrencyBase)
+    private fun saveDataToDb(item: CurrencyBase) {
+        dbRepository.addBaseItem(item)
             .subscribeOn(Schedulers.io())
-            .andThen(dbRepository.getBaseItem())
+            .subscribe { Timber.d("CurrencyBase inserted into DB") }
+            .addToComposite(disposables)
+    }
+
+    private fun loadDataFromDb(currencyCode: String?) {
+        showSnackbarEvent.emit()
+        if (currencyCode != null) return
+        dbRepository.getBaseItem()
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ item ->
                 handleResults(item)
                 Timber.d("Item from db: ${item.base}")
-                showSnackbarEvent.emit()
             },
                 {
                     Timber.d(it, "Fetching data from db failed.")
